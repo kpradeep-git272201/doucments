@@ -1,0 +1,29 @@
+Root user- bhayushubh@gmail.com
+Password- RSProject123@
+ssh -i tailor-aws-cc.pem ec2-user@13.205.136.142
+
+cd D:\aws-key
+
+icacls tailor-aws-cc.pem /inheritance:r
+icacls tailor-aws-cc.pem /remove "NT AUTHORITY\Authenticated Users"
+icacls tailor-aws-cc.pem /remove "BUILTIN\Users"
+icacls tailor-aws-cc.pem /grant %USERNAME%:R
+
+
+ssh -i tailor-aws-cc.pem ubuntu@ec2-13-205-136-142.ap-south-1.compute.amazonaws.com
+https://13.205.136.142/tailor/api/v1/auth/test
+
+sudo systemctl start tailor
+sudo systemctl stop tailor
+sudo systemctl restart tailor
+sudo systemctl status tailor
+Live logs
+tail -f /opt/springboot/logs/app.log
+Error logs
+tail -f /opt/springboot/logs/error.log
+
+New JAR deploy ka BEST FLOW
+
+sudo systemctl stop tailor
+cp tailor-service-0.0.1-SNAPSHOT.jar /opt/springboot/app.jar
+sudo systemctl start tailor
