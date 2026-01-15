@@ -27,3 +27,8 @@ New JAR deploy ka BEST FLOW
 sudo systemctl stop tailor
 cp tailor-service-0.0.1-SNAPSHOT.jar /opt/springboot/app.jar
 sudo systemctl start tailor
+
+RDS-postgres
+username: tailor_postgres
+password: RSPassword1186m
+endpoint: tailor-rds-pg.cji6go2oco82.ap-south-1.rds.amazonaws.com
