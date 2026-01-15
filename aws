@@ -32,3 +32,36 @@ RDS-postgres
 username: tailor_postgres
 password: RSPassword1186m
 endpoint: tailor-rds-pg.cji6go2oco82.ap-south-1.rds.amazonaws.com
+
+
+Connect in Spring Boot Project
+# ===============================
+# SERVER
+# ===============================
+server.port=8080
+
+# ===============================
+# DATASOURCE (AWS RDS PostgreSQL)
+# ===============================
+spring.datasource.url=jdbc:postgresql://tailor-rds-pg.cji6go2oco82.ap-south-1.rds.amazonaws.com:5432/tailor_db
+spring.datasource.username=tailor_postgres
+spring.datasource.password=RSPassword1186m
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# ===============================
+# JPA / HIBERNATE
+# ===============================
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# ===============================
+# HIKARI CONNECTION POOL
+# ===============================
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=2
+spring.datasource.hikari.idle-timeout=30000
+spring.datasource.hikari.max-lifetime=1800000
+spring.datasource.hikari.connection-timeout=30000
+
