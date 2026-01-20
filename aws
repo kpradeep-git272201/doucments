@@ -65,3 +65,92 @@ spring.datasource.hikari.idle-timeout=30000
 spring.datasource.hikari.max-lifetime=1800000
 spring.datasource.hikari.connection-timeout=30000
 
+Edit Tailor service file on EC2 using $ls /etc/systemd/system/ 
+
+
+*********************************************************
+Same JAR deploy | deploy-same-jar.sh
+#!/bin/bash
+
+SERVICE_NAME="tailor"
+SOURCE_JAR="$HOME/project/tailor-service.jar"
+TARGET_DIR="/opt/tailor"
+TARGET_JAR="$TARGET_DIR/tailor-service.jar"
+BACKUP_JAR="$TARGET_DIR/backup-$(date +%F-%H%M).jar"
+
+echo "======================================"
+echo " Deploying Tailor App (Same JAR Name)"
+echo "======================================"
+
+echo "Stopping service..."
+sudo systemctl stop $SERVICE_NAME
+
+if [ -f "$TARGET_JAR" ]; then
+  echo "Backing up old jar..."
+  sudo cp $TARGET_JAR $BACKUP_JAR
+fi
+
+echo "Copying new jar..."
+sudo cp $SOURCE_JAR $TARGET_JAR
+
+echo "Fixing permissions..."
+sudo chown ubuntu:ubuntu $TARGET_JAR
+sudo chmod +x $TARGET_JAR
+
+echo "Starting service..."
+sudo systemctl start $SERVICE_NAME
+
+echo "Checking status..."
+sudo systemctl status $SERVICE_NAME --no-pager
+
+echo "Deployment completed ✅"
+
+-----------------------
+chmod +x deploy-same-jar.sh
+./deploy-same-jar.sh
+*********************************************************
+*********************************************************
+deploy-new-jar-name.sh
+
+
+#!/bin/bash
+
+SERVICE_NAME="tailor"
+NEW_JAR_NAME="tailor-0.0.2.jar"   # 🔴 CHANGE THIS
+SOURCE_JAR="$HOME/project/$NEW_JAR_NAME"
+TARGET_DIR="/opt/tailor"
+SERVICE_FILE="/etc/systemd/system/tailor.service"
+
+echo "======================================"
+echo " Deploying Tailor App (New JAR Name)"
+echo "======================================"
+
+echo "Stopping service..."
+sudo systemctl stop $SERVICE_NAME
+
+echo "Copying new jar..."
+sudo cp $SOURCE_JAR $TARGET_DIR/
+
+echo "Fixing permissions..."
+sudo chown ubuntu:ubuntu $TARGET_DIR/$NEW_JAR_NAME
+sudo chmod +x $TARGET_DIR/$NEW_JAR_NAME
+
+echo "Updating service file..."
+sudo sed -i "s|ExecStart=.*|ExecStart=/usr/bin/java -jar $TARGET_DIR/$NEW_JAR_NAME|" $SERVICE_FILE
+
+echo "Reloading systemd..."
+sudo systemctl daemon-reload
+
+echo "Starting service..."
+sudo systemctl start $SERVICE_NAME
+
+echo "Checking status..."
+sudo systemctl status $SERVICE_NAME --no-pager
+
+echo "Deployment completed ✅"
+
+_________________________________________
+chmod +x deploy-new-jar-name.sh
+./deploy-new-jar-name.sh
+*********************************************************
+
