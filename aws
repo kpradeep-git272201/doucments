@@ -154,3 +154,14 @@ chmod +x deploy-new-jar-name.sh
 ./deploy-new-jar-name.sh
 *********************************************************
 
+sudo mv /opt/tailor/tailor-service.jar /opt/tailor/tailor-service.jar.backup_220126
+sudo cp ~/project/tailor-0.0.1-SNAPSHOT.jar /opt/tailor/tailor-service.jar
+sudo chown ubuntu:ubuntu /opt/tailor/tailor-service.jar
+sudo chmod 755 /opt/tailor/tailor-service.jar
+sudo systemctl start tailor
+Status + Logs verify karo
+sudo systemctl status tailor
+journalctl -u tailor -f
+
+
+
