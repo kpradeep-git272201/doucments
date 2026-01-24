@@ -153,7 +153,7 @@ _________________________________________
 chmod +x deploy-new-jar-name.sh
 ./deploy-new-jar-name.sh
 *********************************************************
-
+New jar deployment
 sudo mv /opt/tailor/tailor-service.jar /opt/tailor/tailor-service.jar.backup_220126
 sudo cp ~/project/tailor-0.0.1-SNAPSHOT.jar /opt/tailor/tailor-service.jar
 sudo chown ubuntu:ubuntu /opt/tailor/tailor-service.jar
